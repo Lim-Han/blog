@@ -1,0 +1,23 @@
+# 1. Global Configuration (전역 설정)
+baseURL = 'https://007limhan.com/'
+theme = 'PaperMod'
+defaultContentLanguage = 'ko'
+languageCode = 'ko-kr'
+
+# 2. PaperMod Theme Specific Configuration (테마 기능 설정)
+[params]
+  defaultTheme = 'auto'
+  ShowShareButtons = true
+  ShowReadingTime = true
+
+# 3. i18n Configuration (다국어 라우팅 및 메타데이터)
+[languages]
+  [languages.ko]
+    languageName = 'KO'
+    weight = 1
+    title = 'Han`s SRE Log'
+    
+  [languages.en]
+    languageName = 'EN'
+    weight = 2
+    title = 'Han`s SRE Log (English)'
