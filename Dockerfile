@@ -1,16 +1,20 @@
-# Stage 1: Build Environment
-FROM klakegg/hugo:ext-alpine AS builder
+# Stage 1: Build Environment (로컬과 동일한 0.146.0 버전 강제 프로비저닝)
+FROM debian:bookworm-slim AS builder
 WORKDIR /app
-# 소스코드와 서브모듈(Theme) 복사
-COPY . . 
-# 정적 아티팩트 빌드 (public 폴더 생성)
+
+# 필수 패키지 설치 및 Hugo Extended 바이너리 다운로드 (의존성 지연 원천 차단)
+RUN apt-get update && apt-get install -y wget ca-certificates && \
+    wget https://github.com/gohugoio/hugo/releases/download/v0.146.0/hugo_extended_0.146.0_linux-amd64.tar.gz && \
+    tar -zxvf hugo_extended_0.146.0_linux-amd64.tar.gz && \
+    mv hugo /usr/local/bin/hugo && \
+    chmod +x /usr/local/bin/hugo
+
+# 소스코드 및 서브모듈 복사 후 정적 빌드
+COPY . .
 RUN hugo --minify
 
-# Stage 2: Runtime Environment (Production)
+# Stage 2: Runtime Environment (Production - 변경 없음)
 FROM nginx:alpine
-# SRE 관점: 불필요한 OS 패키지가 없는 Alpine 리눅스를 사용하여 공격 표면(Attack Surface) 최소화
 COPY ./nginx.conf /etc/nginx/nginx.conf
-# Builder 스테이지에서 생성된 순수 HTML/CSS 결과물만 Nginx 서빙 폴더로 복사
 COPY --from=builder /app/public /usr/share/nginx/html
-
 EXPOSE 80
