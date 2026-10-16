@@ -1,23 +1,149 @@
 # 1. Global Configuration (전역 설정)
 baseURL = 'https://007limhan.com/'
 theme = 'PaperMod'
-defaultContentLanguage = 'ko'
-languageCode = 'ko-kr'
 
-# 2. PaperMod Theme Specific Configuration (테마 기능 설정)
+# 글로벌 리모트 채용 대비: 영어를 기본 언어로 두어 루트(/)에 배치, 한국어는 /ko/
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = false
+
+enableRobotsTXT = true
+enableInlineShortcodes = true
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+
+[pagination]
+  pagerSize = 10
+
+# 2. Taxonomies (카테고리/태그 체계 명시)
+[taxonomies]
+  category = 'categories'
+  tag = 'tags'
+
+# 3. Markup (기술 블로그용 코드 하이라이팅 - PaperMod의 테마 연동 CSS 사용)
+[markup]
+  [markup.highlight]
+    noClasses = false
+    codeFences = true
+    guessSyntax = true
+    lineNos = false
+  [markup.goldmark.renderer]
+    unsafe = true
+
+# 4. PaperMod Theme Specific Configuration (테마 기능 설정)
 [params]
   defaultTheme = 'auto'
   ShowShareButtons = true
   ShowReadingTime = true
+  ShowWordCount = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowRssButtonInSectionTermList = true
+  ShowToc = true
+  TocOpen = false
 
-# 3. i18n Configuration (다국어 라우팅 및 메타데이터)
+  author = 'Han Im'
+
+  # SEO: 링크 공유 시 기본 썸네일 (원본 SVG는 static/og-image.svg에 소스로 보관)
+  images = ['og-image.png']
+
+  keywords = [
+    'Ceph', 'BlueStore', 'CRUSH', 'RBD', 'RGW', 'CephFS', 'cephadm', 'mClock',
+    'Linux I/O', 'io_uring', 'blk-mq', 'O_DIRECT', 'page cache',
+    'NVMe', 'RDMA', 'RoCEv2', 'GPUDirect Storage', 'NIXL',
+    'storage engineering', 'distributed storage', 'cloud infrastructure',
+  ]
+
+  # 소셜 링크 (푸터의 Hugo/PaperMod 크레딧은 유지 - 파셜 오버라이드 없음)
+  [[params.socialIcons]]
+    name = 'github'
+    url = 'https://github.com/Lim-Han'
+
+  [[params.socialIcons]]
+    name = 'linkedin'
+    url = 'https://www.linkedin.com/in/han-im-cloud/'
+
+# 5. i18n Configuration (다국어 라우팅 및 메타데이터)
 [languages]
-  [languages.ko]
-    languageName = 'KO'
-    weight = 1
-    title = 'Han`s SRE Log'
-    
   [languages.en]
     languageName = 'EN'
+    languageCode = 'en-us'
+    weight = 1
+    title = 'Han Im'
+    [languages.en.params]
+      description = 'Engineering notes from a storage engineer running 1PiB+ production Ceph clusters — Ceph internals, the Linux I/O stack, NVMe, RoCEv2 and GPU data paths.'
+      [languages.en.params.homeInfoParams]
+        Title = "Hi, I'm Han Im 👋"
+        Content = """
+On a cloud infrastructure team, I run **5 production Ceph clusters at 10PiB+** (RBD, RGW). The environment serves GPU/AI workloads, so QEMU/KVM virtualization and the RoCEv2 fabric are part of the job too.
+
+When something breaks in production, I don't stop at the fix — I write up what's underneath: Ceph internals, the Linux I/O stack, NVMe, RDMA, and GPU data paths.
+"""
+    [languages.en.menus]
+      [[languages.en.menus.main]]
+        identifier = 'posts'
+        name = 'Posts'
+        url = '/posts/'
+        weight = 10
+      [[languages.en.menus.main]]
+        identifier = 'learn'
+        name = 'Learn'
+        url = '/learn/'
+        weight = 15
+      [[languages.en.menus.main]]
+        identifier = 'categories'
+        name = 'Categories'
+        url = '/categories/'
+        weight = 20
+      [[languages.en.menus.main]]
+        identifier = 'about'
+        name = 'About'
+        url = '/about/'
+        weight = 30
+      [[languages.en.menus.main]]
+        identifier = 'github'
+        name = 'GitHub'
+        url = 'https://github.com/Lim-Han'
+        weight = 40
+
+  [languages.ko]
+    languageName = 'KO'
+    languageCode = 'ko-kr'
     weight = 2
-    title = 'Han`s SRE Log (English)'
+    title = '임한'
+    [languages.ko.params]
+      description = '1PiB+ 규모 프로덕션 Ceph 클러스터를 운영하며 남기는 엔지니어링 노트 — Ceph 내부 구조, Linux I/O 스택, NVMe, RoCEv2, GPU 데이터 경로.'
+      [languages.ko.params.homeInfoParams]
+        Title = "안녕하세요, 임한입니다 👋"
+        Content = """
+클라우드 인프라팀에서 **10PiB+ 규모의 프로덕션 Ceph 클러스터 5개**(RBD, RGW)를 운영합니다. GPU·AI 워크로드가 올라가는 환경이라 QEMU/KVM 가상화와 RoCEv2 패브릭까지 함께 다룹니다.
+
+운영하다 막힌 지점을 그냥 넘기지 않고 아래까지 파고든 기록을 남깁니다. Ceph 내부 구조, Linux I/O 스택, NVMe, RDMA, GPU 데이터 경로.
+"""
+    [languages.ko.menus]
+      [[languages.ko.menus.main]]
+        identifier = 'posts'
+        name = '글'
+        url = '/ko/posts/'
+        weight = 10
+      [[languages.ko.menus.main]]
+        identifier = 'learn'
+        name = 'Learn'
+        url = '/learn/'
+        weight = 15
+      [[languages.ko.menus.main]]
+        identifier = 'categories'
+        name = '카테고리'
+        url = '/ko/categories/'
+        weight = 20
+      [[languages.ko.menus.main]]
+        identifier = 'about'
+        name = '소개'
+        url = '/ko/about/'
+        weight = 30
+      [[languages.ko.menus.main]]
+        identifier = 'github'
+        name = 'GitHub'
+        url = 'https://github.com/Lim-Han'
+        weight = 40

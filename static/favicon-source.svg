@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Han Im">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#161b22"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2f81f7"/>
+      <stop offset="100%" stop-color="#39d0d8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="256" height="256" rx="40" fill="url(#bg)"/>
+
+  <!-- stacked storage cylinders, same motif as og-image.svg -->
+  <g fill="none" stroke="url(#accent)" stroke-width="9">
+    <ellipse cx="128" cy="72" rx="62" ry="20"/>
+    <path d="M66 72v42c0 11 27.8 20 62 20s62-9 62-20V72"/>
+    <path d="M66 114v42c0 11 27.8 20 62 20s62-9 62-20v-42"/>
+    <path d="M66 156v42c0 11 27.8 20 62 20s62-9 62-20v-42"/>
+  </g>
+  <g fill="#39d0d8">
+    <circle cx="102" cy="93" r="6"/>
+    <circle cx="102" cy="135" r="6"/>
+    <circle cx="102" cy="177" r="6"/>
+  </g>
+</svg>
