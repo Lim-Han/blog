@@ -1,0 +1,33 @@
+{{- /*
+  Lists the files in this page bundle as download links (pages and images excluded).
+  Usage: {{< rawdata >}}  or  {{< rawdata pattern="*.csv" >}}
+*/ -}}
+{{- $pattern := .Get "pattern" | default "**" -}}
+{{- $files := slice -}}
+{{- range .Page.Resources.Match $pattern }}
+  {{- if not (in (slice "page" "image") .ResourceType) }}
+    {{- $files = $files | append . }}
+  {{- end }}
+{{- end -}}
+{{- if not $files }}
+  {{- warnf "%s: rawdata found no files matching %q" .Page.File.Path $pattern }}
+{{- else }}
+<table class="rawdata">
+  <thead><tr><th>File</th><th>Type</th><th>Size</th></tr></thead>
+  <tbody>
+  {{- range sort $files "Name" }}
+    {{- $size := len .Content }}
+    <tr>
+      <td><a href="{{ .RelPermalink }}" download><code>{{ .Name }}</code></a></td>
+      <td>{{ .MediaType.Type | default (path.Ext .Name) }}</td>
+      <td>
+        {{- if lt $size 1024 }}{{ $size }} B
+        {{- else if lt $size 1048576 }}{{ lang.FormatNumber 1 (div (float $size) 1024) }} KiB
+        {{- else }}{{ lang.FormatNumber 1 (div (float $size) 1048576) }} MiB
+        {{- end -}}
+      </td>
+    </tr>
+  {{- end }}
+  </tbody>
+</table>
+{{- end }}

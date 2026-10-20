@@ -8,20 +8,22 @@ disableShare = true
 hideMeta = true
 +++
 
-I'm Han Im, a Storage Engineer on a cloud infrastructure team. I run **5 production Ceph clusters at 1PiB+** (RBD, RGW, CephFS) serving GPU/AI cloud workloads, on QEMU/KVM virtualization over a RoCEv2 fabric.
+I'm Han Im, a distributed storage engineer who measures down to the node I/O stack.
 
-This blog is an engineering notebook: production incidents and the kernel/storage internals behind them, written up as I dig into the actual mechanism rather than the surface-level fix.
+## What I work on
 
-## What I write about
+- **Distributed storage — Ceph RGW → RADOS.** Owning features upstream, not just fixing bugs.
+- **Node I/O stack — io_uring, blk-mq, NVMe, network stack.** Instrumented with eBPF; I dig only into the layer that is actually in the way.
+- **Kernel, only when the measurement hits a kernel limit** — liburing, io_uring, libceph/rbd.
 
-- **Ceph internals & operations** — CRUSH, BlueStore, PG/upmap balancing, mClock scheduling, cephadm
-- **Linux I/O stack** — O_DIRECT, page cache, io_uring, blk-mq
-- **NVMe & storage hardware**
-- **RDMA / RoCEv2 networking**
-- **GPU data path** — GPUDirect Storage, NIXL, data movement for AI inference
+## How the measurements work
+
+Each [measurement](/measurements/) has a question, a prediction written before measuring, the result, the raw data, and a way to rerun it. The environment is described on [Lab](/lab/). Upstream work is tracked on [Upstream](/upstream/).
+
+## Production
+
+I run 8PB of Ceph across 5 clusters (RBD, RGW, CephFS) plus IBM Storage Scale and VAST, on a GPU/AI cloud with QEMU/KVM and a RoCEv2 fabric.
 
 ## Elsewhere
 
-I'm also part of the organizing team at **Ubuntu Korea Community**.
-
-Find me on [GitHub](https://github.com/Lim-Han) and [LinkedIn](https://www.linkedin.com/in/han-im-cloud/).
+Organizing team at **Ubuntu Korea Community**. [GitHub](https://github.com/Lim-Han) · [LinkedIn](https://www.linkedin.com/in/han-im-cloud/)

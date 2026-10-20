@@ -1,0 +1,21 @@
+# Upstream contributions. content/upstream/ 페이지가 status별로 렌더링한다.
+#
+# project:        upstream 프로젝트 (예: ceph, linux, liburing, fio)
+# title:          PR/issue 제목
+# type:           pr | issue | rfc
+# url:            PR/issue/메일링리스트 링크
+# status:         open | merged | closed
+# date:           YYYY-MM-DD (제출일)
+# designed_by_me: true면 설계부터 직접 한 기여
+# numbers_url:    근거가 된 측정 글 링크 (없으면 "")
+# draft:          true면 `hugo server`(development)에서만 보이고 프로덕션 빌드에서는 숨김
+
+- project: ceph
+  title: "SAMPLE — replace me"
+  type: pr
+  url: "https://github.com/ceph/ceph/pulls"
+  status: open
+  date: 2026-10-20
+  designed_by_me: false
+  numbers_url: ""
+  draft: true

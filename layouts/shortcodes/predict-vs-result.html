@@ -1,0 +1,58 @@
+{{- /*
+  Renders predicted vs measured values as a table.
+
+  Inline (YAML list as inner content):
+    {{< predict-vs-result >}}
+    - metric: 4k randread IOPS
+      predicted: 450000
+      measured: 412000
+      unit: IOPS
+    {{< /predict-vs-result >}}
+
+  Or from a YAML/JSON/TOML file in the page bundle:
+    {{< predict-vs-result file="pvr.yaml" >}}
+
+  Δ and Δ% are computed only when predicted and measured are both numbers.
+*/ -}}
+{{- $rows := slice -}}
+{{- with .Get "file" }}
+  {{- with $.Page.Resources.Get . }}
+    {{- $rows = . | transform.Unmarshal }}
+  {{- else }}
+    {{- errorf "%s: predict-vs-result: file %q not found in page bundle" $.Page.File.Path . }}
+  {{- end }}
+{{- else }}
+  {{- with trim .Inner " \n\t" }}
+    {{- $rows = transform.Unmarshal . }}
+  {{- end }}
+{{- end -}}
+{{- $numeric := slice "int" "int64" "uint64" "float64" -}}
+{{- if not $rows }}
+  {{- warnf "%s: predict-vs-result has no rows" .Page.File.Path }}
+{{- else }}
+<table class="predict-vs-result">
+  <thead>
+    <tr><th>Metric</th><th>Predicted</th><th>Measured</th><th>Δ</th><th>Δ%</th></tr>
+  </thead>
+  <tbody>
+  {{- range $rows }}
+    {{- $unit := cond (isset . "unit") (printf " %v" .unit) "" }}
+    {{- $p := .predicted }}
+    {{- $m := .measured }}
+    <tr>
+      <td>{{ .metric }}</td>
+      <td>{{ $p }}{{ $unit }}</td>
+      <td>{{ $m }}{{ $unit }}</td>
+      {{- if and (in $numeric (printf "%T" $p)) (in $numeric (printf "%T" $m)) }}
+        {{- $d := sub (float $m) (float $p) }}
+        {{- $prec := cond (and (hasPrefix (printf "%T" $p) "int") (hasPrefix (printf "%T" $m) "int")) 0 2 }}
+        <td>{{ if gt $d 0 }}+{{ end }}{{ lang.FormatNumber $prec $d }}{{ $unit }}</td>
+        <td>{{ if ne (float $p) 0.0 }}{{ $pct := mul (div $d (float $p)) 100 }}{{ if gt $pct 0 }}+{{ end }}{{ lang.FormatNumber 1 $pct }}%{{ else }}—{{ end }}</td>
+      {{- else }}
+        <td>—</td><td>—</td>
+      {{- end }}
+    </tr>
+  {{- end }}
+  </tbody>
+</table>
+{{- end }}

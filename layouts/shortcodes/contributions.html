@@ -1,0 +1,48 @@
+{{- /*
+  Renders data/contributions.yaml grouped by status.
+  Entries with `draft: true` are shown only in development (`hugo server`).
+*/ -}}
+{{- $all := site.Data.contributions | default slice -}}
+{{- $statuses := slice "merged" "open" "closed" -}}
+{{- $titles := dict "merged" "Merged" "open" "Open" "closed" "Closed" -}}
+{{- $visible := slice -}}
+{{- range $all }}
+  {{- if not (in $statuses .status) }}
+    {{- warnf "contributions.yaml: %q has unknown status %q (expected merged|open|closed)" .title .status }}
+  {{- end }}
+  {{- if not (in (slice "pr" "issue" "rfc") .type) }}
+    {{- warnf "contributions.yaml: %q has unknown type %q (expected pr|issue|rfc)" .title .type }}
+  {{- end }}
+  {{- if or (not .draft) hugo.IsDevelopment }}
+    {{- $visible = $visible | append . }}
+  {{- end }}
+{{- end -}}
+{{- if not $visible }}
+<p>No contributions yet.</p>
+{{- else }}
+  {{- range $statuses }}
+    {{- $items := where $visible "status" . }}
+    {{- with $items }}
+{{- $status := (index . 0).status }}
+<h2 id="{{ $status }}">{{ index $titles $status }}</h2>
+<table class="contributions">
+  <thead><tr><th>Date</th><th>Project</th><th>Title</th><th>Type</th><th>Numbers</th></tr></thead>
+  <tbody>
+      {{- range sort . "date" "desc" }}
+    <tr>
+      <td>{{ time.Format "2006-01-02" .date }}</td>
+      <td>{{ .project }}</td>
+      <td>
+        <a href="{{ .url }}">{{ .title }}</a>
+        {{- if .designed_by_me }} <em>(designed by me)</em>{{ end }}
+        {{- if .draft }} <strong>[draft]</strong>{{ end }}
+      </td>
+      <td>{{ upper .type }}</td>
+      <td>{{ with .numbers_url }}<a href="{{ . }}">numbers</a>{{ else }}—{{ end }}</td>
+    </tr>
+      {{- end }}
+  </tbody>
+</table>
+    {{- end }}
+  {{- end }}
+{{- end }}

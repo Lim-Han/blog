@@ -12,6 +12,10 @@ buildDrafts = false
 buildFuture = false
 buildExpired = false
 
+# RSS: 피드 항목 수 제한 없음 (본문 전문은 params.ShowFullTextinRSS)
+[services.rss]
+  limit = -1
+
 [pagination]
   pagerSize = 10
 
@@ -19,6 +23,7 @@ buildExpired = false
 [taxonomies]
   category = 'categories'
   tag = 'tags'
+  layer = 'layers'
 
 # 3. Markup (기술 블로그용 코드 하이라이팅 - PaperMod의 테마 연동 CSS 사용)
 [markup]
@@ -40,8 +45,12 @@ buildExpired = false
   ShowBreadCrumbs = true
   ShowCodeCopyButtons = true
   ShowRssButtonInSectionTermList = true
-  ShowToc = true
+  # 홈 목록은 측정 글 기준
+  mainSections = ['measurements']
+  # ToC는 measurements 섹션에서만 켠다 (content/measurements/_index.md의 cascade)
+  ShowToc = false
   TocOpen = false
+  ShowFullTextinRSS = true
 
   author = 'Han Im'
 
@@ -49,10 +58,9 @@ buildExpired = false
   images = ['og-image.png']
 
   keywords = [
-    'Ceph', 'BlueStore', 'CRUSH', 'RBD', 'RGW', 'CephFS', 'cephadm', 'mClock',
-    'Linux I/O', 'io_uring', 'blk-mq', 'O_DIRECT', 'page cache',
-    'NVMe', 'RDMA', 'RoCEv2', 'GPUDirect Storage', 'NIXL',
-    'storage engineering', 'distributed storage', 'cloud infrastructure',
+    'Ceph', 'RGW', 'RADOS', 'BlueStore', 'distributed storage',
+    'io_uring', 'liburing', 'blk-mq', 'NVMe', 'Linux I/O stack', 'network stack', 'RoCEv2',
+    'eBPF', 'bpftrace', 'fio', 'storage performance', 'measurement',
   ]
 
   # 소셜 링크 (푸터의 Hugo/PaperMod 크레딧은 유지 - 파셜 오버라이드 없음)
@@ -72,39 +80,39 @@ buildExpired = false
     weight = 1
     title = 'Han Im'
     [languages.en.params]
-      description = 'Engineering notes from a storage engineer running 1PiB+ production Ceph clusters — Ceph internals, the Linux I/O stack, NVMe, RoCEv2 and GPU data paths.'
+      description = 'Distributed storage engineer (Ceph RGW → RADOS). Measurements down the node I/O stack — io_uring, blk-mq, NVMe, network — with prediction, raw data and repro.'
       [languages.en.params.homeInfoParams]
         Title = "Hi, I'm Han Im 👋"
         Content = """
-On a cloud infrastructure team, I run **5 production Ceph clusters at 10PiB+** (RBD, RGW). The environment serves GPU/AI workloads, so QEMU/KVM virtualization and the RoCEv2 fabric are part of the job too.
+Distributed storage engineer who measures down to the node I/O stack. I work on Ceph (RGW → RADOS), and instrument io_uring, blk-mq, NVMe and the network stack with eBPF — digging only into the layer that is actually in the way.
 
-When something breaks in production, I don't stop at the fix — I write up what's underneath: Ceph internals, the Linux I/O stack, NVMe, RDMA, and GPU data paths.
+Every measurement here starts with a written prediction and ends with the raw data and a way to rerun it.
 """
     [languages.en.menus]
       [[languages.en.menus.main]]
-        identifier = 'posts'
-        name = 'Posts'
-        url = '/posts/'
+        identifier = 'measurements'
+        name = 'Measurements'
+        url = '/measurements/'
         weight = 10
+      [[languages.en.menus.main]]
+        identifier = 'upstream'
+        name = 'Upstream'
+        url = '/upstream/'
+        weight = 20
+      [[languages.en.menus.main]]
+        identifier = 'lab'
+        name = 'Lab'
+        url = '/lab/'
+        weight = 30
       [[languages.en.menus.main]]
         identifier = 'learn'
         name = 'Learn'
         url = '/learn/'
-        weight = 15
-      [[languages.en.menus.main]]
-        identifier = 'categories'
-        name = 'Categories'
-        url = '/categories/'
-        weight = 20
+        weight = 35
       [[languages.en.menus.main]]
         identifier = 'about'
         name = 'About'
         url = '/about/'
-        weight = 30
-      [[languages.en.menus.main]]
-        identifier = 'github'
-        name = 'GitHub'
-        url = 'https://github.com/Lim-Han'
         weight = 40
 
   [languages.ko]
@@ -113,37 +121,48 @@ When something breaks in production, I don't stop at the fix — I write up what
     weight = 2
     title = '임한'
     [languages.ko.params]
-      description = '1PiB+ 규모 프로덕션 Ceph 클러스터를 운영하며 남기는 엔지니어링 노트 — Ceph 내부 구조, Linux I/O 스택, NVMe, RoCEv2, GPU 데이터 경로.'
+      description = '분산 스토리지 엔지니어(Ceph RGW → RADOS). 노드 I/O 스택(io_uring·blk-mq·NVMe·네트워크)까지 예측·원본 데이터·재현 방법과 함께 계측한 기록.'
       [languages.ko.params.homeInfoParams]
         Title = "안녕하세요, 임한입니다 👋"
         Content = """
-클라우드 인프라팀에서 **10PiB+ 규모의 프로덕션 Ceph 클러스터 5개**(RBD, RGW)를 운영합니다. GPU·AI 워크로드가 올라가는 환경이라 QEMU/KVM 가상화와 RoCEv2 패브릭까지 함께 다룹니다.
+노드 I/O 스택까지 계측하는 분산 스토리지 엔지니어입니다. Ceph(RGW → RADOS)를 다루고, io_uring·blk-mq·NVMe·네트워크 스택을 eBPF로 계측해 실제로 막히는 층만 팝니다.
 
-운영하다 막힌 지점을 그냥 넘기지 않고 아래까지 파고든 기록을 남깁니다. Ceph 내부 구조, Linux I/O 스택, NVMe, RDMA, GPU 데이터 경로.
+글은 대부분 영어로 씁니다. 모든 측정은 미리 적어 둔 예측에서 시작해 원본 데이터와 재현 방법으로 끝납니다.
 """
+
+    # ko는 보조 언어(번역 parity 없음). en에만 있는 페이지는 noLangPrefix로 /ko/ 접두사 없이 연결한다.
+    # (layouts/partials/header.html 오버라이드에서 처리)
     [languages.ko.menus]
       [[languages.ko.menus.main]]
-        identifier = 'posts'
-        name = '글'
-        url = '/ko/posts/'
+        identifier = 'measurements'
+        name = 'Measurements'
+        url = '/measurements/'
         weight = 10
+        [languages.ko.menus.main.params]
+          noLangPrefix = true
+      [[languages.ko.menus.main]]
+        identifier = 'upstream'
+        name = 'Upstream'
+        url = '/upstream/'
+        weight = 20
+        [languages.ko.menus.main.params]
+          noLangPrefix = true
+      [[languages.ko.menus.main]]
+        identifier = 'lab'
+        name = 'Lab'
+        url = '/lab/'
+        weight = 30
+        [languages.ko.menus.main.params]
+          noLangPrefix = true
       [[languages.ko.menus.main]]
         identifier = 'learn'
         name = 'Learn'
         url = '/learn/'
-        weight = 15
-      [[languages.ko.menus.main]]
-        identifier = 'categories'
-        name = '카테고리'
-        url = '/ko/categories/'
-        weight = 20
+        weight = 35
+        [languages.ko.menus.main.params]
+          noLangPrefix = true
       [[languages.ko.menus.main]]
         identifier = 'about'
         name = '소개'
-        url = '/ko/about/'
-        weight = 30
-      [[languages.ko.menus.main]]
-        identifier = 'github'
-        name = 'GitHub'
-        url = 'https://github.com/Lim-Han'
+        url = '/about/'
         weight = 40
