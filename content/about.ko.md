@@ -18,7 +18,7 @@ hideMeta = true
 
 ## 측정 글의 형식
 
-[측정 글](/measurements/)은 질문, 측정 전에 적은 예측, 결과, 원본 데이터, 재현 방법으로 구성됩니다. 환경은 [Lab](/lab/)에, upstream 작업은 [Upstream](/upstream/)에 정리합니다.
+[측정 글](/measurements/)은 질문, 측정 전에 적은 예측, 결과, 원본 데이터, 재현 방법으로 구성됩니다. upstream 작업은 [Upstream](/upstream/)에 정리합니다.
 
 ## 프로덕션
 

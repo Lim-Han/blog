@@ -18,7 +18,7 @@ I'm Han Im, a distributed storage engineer who measures down to the node I/O sta
 
 ## How the measurements work
 
-Each [measurement](/measurements/) has a question, a prediction written before measuring, the result, the raw data, and a way to rerun it. The environment is described on [Lab](/lab/). Upstream work is tracked on [Upstream](/upstream/).
+Each [measurement](/measurements/) has a question, a prediction written before measuring, the result, the raw data, and a way to rerun it. Upstream work is tracked on [Upstream](/upstream/).
 
 ## Production
 

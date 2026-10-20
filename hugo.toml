@@ -104,11 +104,6 @@ Every measurement here starts with a written prediction and ends with the raw da
         url = '/commits/'
         weight = 25
       [[languages.en.menus.main]]
-        identifier = 'lab'
-        name = 'Lab'
-        url = '/lab/'
-        weight = 30
-      [[languages.en.menus.main]]
         identifier = 'learn'
         name = 'Learn'
         url = '/learn/'
@@ -156,13 +151,6 @@ Every measurement here starts with a written prediction and ends with the raw da
         name = 'Commits'
         url = '/commits/'
         weight = 25
-        [languages.ko.menus.main.params]
-          noLangPrefix = true
-      [[languages.ko.menus.main]]
-        identifier = 'lab'
-        name = 'Lab'
-        url = '/lab/'
-        weight = 30
         [languages.ko.menus.main.params]
           noLangPrefix = true
       [[languages.ko.menus.main]]

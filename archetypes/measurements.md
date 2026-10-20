@@ -28,8 +28,6 @@ repro: ""         # 재현 repo/commit 링크
 
 ## Setup
 
-Lab environment: see [Lab](/lab/).
-
 {{`{{< env >}}`}}
 
 ## Method
