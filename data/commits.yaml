@@ -1,0 +1,19 @@
+# Commits merged upstream. content/commits/ 페이지가 project별로 렌더링한다.
+#
+# project:      upstream 프로젝트 (예: ceph, linux, liburing, fio)
+# sha:          commit SHA (12자 이상 권장)
+# subject:      commit 제목 한 줄
+# url:          commit 링크 (GitHub commit, git.kernel.org 등)
+# date:         YYYY-MM-DD (upstream에 머지된 날짜)
+# pr_url:       해당 PR/패치 시리즈 링크 (없으면 "") — data/contributions.yaml의 url과 같게
+# numbers_url:  근거가 된 측정 글 링크 (없으면 "")
+# draft:        true면 `hugo server`(development)에서만 보이고 프로덕션 빌드에서는 숨김
+
+- project: ceph
+  sha: "000000000000"
+  subject: "SAMPLE — replace me"
+  url: "https://github.com/ceph/ceph/commits/main"
+  date: 2026-10-20
+  pr_url: ""
+  numbers_url: ""
+  draft: true

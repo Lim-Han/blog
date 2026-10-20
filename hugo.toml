@@ -21,7 +21,6 @@ buildExpired = false
 
 # 2. Taxonomies (카테고리/태그 체계 명시)
 [taxonomies]
-  category = 'categories'
   tag = 'tags'
   layer = 'layers'
 
@@ -100,6 +99,11 @@ Every measurement here starts with a written prediction and ends with the raw da
         url = '/upstream/'
         weight = 20
       [[languages.en.menus.main]]
+        identifier = 'commits'
+        name = 'Commits'
+        url = '/commits/'
+        weight = 25
+      [[languages.en.menus.main]]
         identifier = 'lab'
         name = 'Lab'
         url = '/lab/'
@@ -145,6 +149,13 @@ Every measurement here starts with a written prediction and ends with the raw da
         name = 'Upstream'
         url = '/upstream/'
         weight = 20
+        [languages.ko.menus.main.params]
+          noLangPrefix = true
+      [[languages.ko.menus.main]]
+        identifier = 'commits'
+        name = 'Commits'
+        url = '/commits/'
+        weight = 25
         [languages.ko.menus.main.params]
           noLangPrefix = true
       [[languages.ko.menus.main]]
